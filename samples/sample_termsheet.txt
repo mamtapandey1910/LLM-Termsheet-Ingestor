@@ -1,0 +1,88 @@
+TERM SHEET
+Series A Preferred Stock Financing of Acme Technologies, Inc.
+
+Date: February 15, 2026
+
+This Term Sheet summarises the principal terms of a proposed Series A
+preferred stock financing of Acme Technologies, Inc. (the "Company").
+This document is non-binding except where expressly stated otherwise.
+
+------------------------------------------------------------
+FINANCING TERMS
+------------------------------------------------------------
+
+Issuer:              Acme Technologies, Inc.
+
+Security:            Series A Preferred Stock ("Series A")
+
+Aggregate Proceeds:  $5,000,000
+
+Pre-Money Valuation: $20,000,000
+
+Post-Money Valuation: $25,000,000
+
+Price per Share:     $2.50 (the "Original Issue Price")
+
+Investors:
+  - Sequoia Capital ($3,000,000)
+  - Andreessen Horowitz ($1,500,000)
+  - Angel investors ($500,000)
+
+Lead Investor:       Sequoia Capital
+
+------------------------------------------------------------
+TERMS OF SERIES A PREFERRED
+------------------------------------------------------------
+
+Liquidation Preference:
+  1x non-participating liquidation preference equal to the Original
+  Issue Price, plus any declared but unpaid dividends.
+
+Anti-Dilution:
+  Weighted-average anti-dilution protection, subject to standard
+  carve-outs (stock splits, dividends paid in stock, etc.).
+
+Dividends:
+  8% per annum, cumulative, payable when and if declared by the Board.
+
+Conversion:
+  Automatically converts to Common Stock upon a qualified IPO of at
+  least $50,000,000 at a pre-money valuation of at least $150,000,000.
+
+Voting Rights:
+  Series A votes on an as-converted basis together with Common Stock,
+  except as required by law or the Certificate of Incorporation.
+
+------------------------------------------------------------
+BOARD OF DIRECTORS
+------------------------------------------------------------
+
+Board Composition:
+  - 2 seats: Common Stock holders (founders)
+  - 1 seat: Series A holder (Sequoia Capital designee)
+  - 1 seat: Independent director (mutually agreed)
+
+------------------------------------------------------------
+OTHER TERMS
+------------------------------------------------------------
+
+Pro-Rata Rights:
+  Each Investor shall have the right to participate in subsequent
+  financing rounds on a pro-rata basis.
+
+Information Rights:
+  Investors holding at least 5% of Series A shall be entitled to
+  receive monthly financial statements and an annual budget.
+
+Governing Law:     State of Delaware
+
+Closing Date:      On or before March 31, 2026
+
+Counsel:
+  Company:   Wilson Sonsini Goodrich & Rosati
+  Investors: Fenwick & West LLP
+
+------------------------------------------------------------
+This Term Sheet is intended solely as a basis for further discussion
+and is not intended to be binding.
+------------------------------------------------------------
