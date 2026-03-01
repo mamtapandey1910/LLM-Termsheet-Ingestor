@@ -1,0 +1,58 @@
+TERM SHEET
+
+DEAL SUMMARY
+
+Deal Name: Project Apollo
+Date: February 15, 2025
+
+PARTIES
+
+Borrower: Apollo Industries Ltd.
+Guarantor: Apollo Holdings Inc. (parent company)
+Arranger / Lender: Global Capital Bank N.A.
+
+FACILITY DETAILS
+
+Facility Type: Senior Secured Term Loan A
+Currency: USD
+Facility Amount: $250,000,000 (Two Hundred and Fifty Million US Dollars)
+Closing Date: March 31, 2025
+Maturity Date: March 31, 2030
+
+PRICING
+
+Interest Rate: Term SOFR (1-month) + 2.75% per annum
+Commitment Fee: 0.50% per annum on undrawn amounts
+Upfront Fee: 1.00% of facility amount, payable at closing
+
+PURPOSE
+
+Use of Proceeds: Refinancing of existing indebtedness and general corporate purposes.
+
+REPAYMENT
+
+Amortisation: 5% per annum of the original principal, paid quarterly.
+Bullet Repayment: Remaining balance due at Maturity Date.
+
+COVENANTS
+
+Financial Covenants:
+  - Total Net Leverage Ratio: not to exceed 4.0x (tested quarterly)
+  - Interest Coverage Ratio: not less than 3.0x (tested quarterly)
+  - Minimum Liquidity: $20,000,000 at all times
+
+SECURITY
+
+First-priority security interest over all assets of the Borrower and Guarantor.
+
+CONDITIONS PRECEDENT
+
+Standard conditions for transactions of this type, including satisfactory legal due
+diligence, executed loan documentation, and evidence of corporate authority.
+
+GOVERNING LAW
+
+New York, United States of America.
+
+---
+This term sheet is indicative and does not constitute a binding commitment.
