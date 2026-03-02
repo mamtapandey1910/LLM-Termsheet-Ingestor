@@ -2,6 +2,16 @@
 
 Extracts termsheet data from PDF using LLM, validates, and saves to PostgreSQL.
 
+# Workflow improvement
+
+    1.  Currently the LLM is extracting all the data from pdf, and then we are validating the data, but it provides a blackbox for us as a user to go and check where llm has picked any data from, to improve this, we can also extract the reference data from pdf, it will provide more convenince to the user, instead of reading whole doc, we can directly jump to the reference data.
+
+    2. currently we are using only 1 pdf as termsheet, but we could also take a refernce of the factsheet and if any descrepancy happens we can raise the flag to the user.
+
+    3. I have already implemented to take the humans as a loop before inserting the data into database, which could lead us less prone to error and inserting bad data. However, we can improve this step by displaying data the UI and add the option to approve and reject from UI, which will be more user friendly.
+
+    4. We can also add versioning to the data, so that if anything happens we can easily go back to history/previous version of the data.
+
 ## Quick Start
 
 prerequisites:- Python 3.8 or higher
