@@ -4,6 +4,7 @@ from src.database.connection import (
     create_database_if_not_exists,
     create_tables,
     get_database_url,
+    save_termsheet,
 )
 from src.database.models import Base, Product, ProductEvent, ProductUnderlying
 
@@ -17,4 +18,5 @@ __all__ = [
     "create_database_if_not_exists",
     "create_tables",
     "get_database_url",
+    "save_termsheet",
 ]

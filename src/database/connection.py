@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+from typing import TYPE_CHECKING
 
 from dotenv import load_dotenv
 from psycopg import connect
@@ -9,7 +10,10 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import sessionmaker
 
-from src.database.models import Base
+from src.database.models import Base, Product, ProductEvent, ProductUnderlying
+
+if TYPE_CHECKING:
+    from src.schema.product_schema import TermsheetExtract
 
 load_dotenv()
 
@@ -90,3 +94,89 @@ def create_database_if_not_exists() -> None:
 
 def create_tables() -> None:
     Base.metadata.create_all(bind=get_engine())
+
+
+def save_termsheet(data: "TermsheetExtract") -> Product:
+    """Save extracted termsheet data to database. Updates if ISIN already exists."""
+    session = SessionLocal()
+    try:
+        # Check if product with same ISIN exists
+        existing_product = session.query(Product).filter(Product.isin == data.isin).first()
+        
+        if existing_product:
+            # Update existing product
+            existing_product.sedol = data.sedol
+            existing_product.short_description = data.short_description
+            existing_product.issuer = data.issuer
+            existing_product.currency = data.currency
+            existing_product.product_type = data.product_type
+            existing_product.guarantor = data.guarantor
+            existing_product.dealer = data.dealer
+            existing_product.nominal_amount = data.nominal_amount
+            existing_product.specified_denomination = data.specified_denomination
+            existing_product.calculation_amount = data.calculation_amount
+            existing_product.strike_date = data.strike_date
+            existing_product.issue_date = data.issue_date
+            existing_product.trade_date = data.trade_date
+            existing_product.maturity_date = data.maturity_date
+            existing_product.coupon_barrier_level = data.coupon_barrier_level
+            existing_product.knock_in_barrier_level = data.knock_in_barrier_level
+            product = existing_product
+            
+            # Delete existing events and underlyings for this product
+            session.query(ProductEvent).filter(ProductEvent.product_isin == data.isin).delete()
+            session.query(ProductUnderlying).filter(ProductUnderlying.product_isin == data.isin).delete()
+        else:
+            # Create new Product
+            product = Product(
+                isin=data.isin,
+                sedol=data.sedol,
+                short_description=data.short_description,
+                issuer=data.issuer,
+                currency=data.currency,
+                product_type=data.product_type,
+                guarantor=data.guarantor,
+                dealer=data.dealer,
+                nominal_amount=data.nominal_amount,
+                specified_denomination=data.specified_denomination,
+                calculation_amount=data.calculation_amount,
+                strike_date=data.strike_date,
+                issue_date=data.issue_date,
+                trade_date=data.trade_date,
+                maturity_date=data.maturity_date,
+                coupon_barrier_level=data.coupon_barrier_level,
+                knock_in_barrier_level=data.knock_in_barrier_level,
+            )
+            session.add(product)
+
+        # Create ProductEvents
+        for event in data.events:
+            product_event = ProductEvent(
+                product_isin=data.isin,
+                event_type=event.event_type,
+                event_level_pct=event.event_level_pct,
+                event_strike_pct=event.event_strike_pct,
+                event_date=event.event_date,
+                event_amount=event.event_amount,
+                event_payment_date=event.event_payment_date,
+            )
+            session.add(product_event)
+
+        # Create ProductUnderlyings
+        for underlying in data.underlyings:
+            product_underlying = ProductUnderlying(
+                product_isin=data.isin,
+                bbg_code=underlying.bbg_code,
+                weight=underlying.weight,
+                initial_price=underlying.initial_price,
+            )
+            session.add(product_underlying)
+
+        session.commit()
+        session.refresh(product)
+        return product
+    except Exception:
+        session.rollback()
+        raise
+    finally:
+        session.close()
