@@ -1,4 +1,4 @@
-.PHONY: setup run dev db-create db-check db-init extract test lint typecheck format clean help
+.PHONY: setup run test lint typecheck format clean help
 
 PYTHON := .venv/bin/python
 PIP := $(PYTHON) -m pip
@@ -13,25 +13,7 @@ setup:
 	$(PIP) install -r requirements.txt
 
 run:
-	$(PYTHON) main.py
-
-dev:
-	$(PYTHON) main.py --db-create
-	$(PYTHON) main.py --db-check
-	$(PYTHON) main.py --db-init
-	$(PYTHON) main.py
-
-db-create:
-	$(PYTHON) main.py --db-create
-
-db-check:
-	$(PYTHON) main.py --db-check
-
-db-init:
-	$(PYTHON) main.py --db-init
-
-extract:
-	$(PYTHON) main.py --extract $(FILE)
+	$(PYTHON) main.py $(FILE)
 
 test:
 	$(PYTHON) -m pytest
@@ -51,13 +33,12 @@ clean:
 
 help:
 	@echo "Available targets:"
-	@echo "  make setup     - create venv and install requirements"
-	@echo "  make run       - run main.py"
-	@echo "  make dev       - db-create + db-check + db-init + run"
-	@echo "  make db-create - create database if missing"
-	@echo "  make db-check  - verify PostgreSQL connection from main.py"
-	@echo "  make db-init   - create schema tables"
-	@echo "  make extract   - extract data from termsheet (FILE=path/to/file.pdf)"
+	@echo "  make setup  - create venv and install requirements"
+	@echo "  make run    - extract termsheet and output JSON (FILE=path/to/file.pdf)"
+	@echo "  make test   - run tests"
+	@echo "  make lint   - lint with ruff"
+	@echo "  make format - auto-format with ruff"
+	@echo "  make clean  - remove venv and caches"
 	@echo "  make test      - run tests"
 	@echo "  make lint      - run lint checks"
 	@echo "  make typecheck - run mypy"
