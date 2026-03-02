@@ -19,15 +19,28 @@ If a field is not found, use null.
 Return JSON with these fields:
 - isin: string (12 characters)
 - sedol: string or null (7 characters)
-- issuer: string
-- guarantor: string or null
+- short_description: string or null (brief product description)
+- issuer: string (issuer name)
+- guarantor: string or null (guarantor name)
 - currency: string (3 letters, default "GBP")
-- notional_amount: number or null
-- strike_date: string (YYYY-MM-DD)
+- notional_amount: number or null (aggregate nominal amount)
+- product_type: string or null (e.g., "Phoenix Autocall")
+- strike_date: string or null (YYYY-MM-DD, trade/strike date)
 - issue_date: string (YYYY-MM-DD)
 - maturity_date: string (YYYY-MM-DD)
-- coupon_barrier_level: number or null (decimal, e.g., 0.65 for 65%)
-- knock_in_barrier_level: number or null (decimal, e.g., 0.50 for 50%)
+- events: array of event objects with:
+  - event_type: string ("Strike", "Coupon", "Autocall", "Knock-in")
+  - event_level_pct: number or null (barrier level as percentage, e.g., 75)
+  - event_strike_pct: number or null (strike percentage, e.g., 100)
+  - event_date: string (YYYY-MM-DD)
+  - event_amount: number or null (coupon rate or redemption amount)
+  - event_payment_date: string or null (YYYY-MM-DD)
+- underlyings: array of underlying objects with:
+  - bbg_code: string (Bloomberg code, e.g., "SX5E Index", "UKX Index")
+  - weight: number or null
+  - initial_price: number or null (initial/strike price)
+
+Extract ALL coupon events, autocall events, and underlyings from the document.
 """
 
 

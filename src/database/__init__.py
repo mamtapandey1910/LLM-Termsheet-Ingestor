@@ -5,11 +5,13 @@ from src.database.connection import (
     create_tables,
     get_database_url,
 )
-from src.database.models import Base, Product
+from src.database.models import Base, Product, ProductEvent, ProductUnderlying
 
 __all__ = [
     "Base",
     "Product",
+    "ProductEvent",
+    "ProductUnderlying",
     "SessionLocal",
     "check_database_connection",
     "create_database_if_not_exists",
