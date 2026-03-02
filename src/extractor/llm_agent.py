@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 
 from src.schema.product_schema import TermsheetExtract
+from src.extractor.system_prompt import TERMSHEET_EXTRACTION_PROMPT
 
 load_dotenv()
 
@@ -32,22 +33,18 @@ def extract_termsheet(parsed_text: str) -> TermsheetExtract:
     client = OpenAI(api_key=api_key)
 
     response = client.beta.chat.completions.parse(
-        model="gpt-4o-mini",
+        model="gpt-4o",
         messages=[
             {
                 "role": "system",
-                "content": (
-                    "You are an expert financial document extraction engine. "
-                    "Given an article, produce a JSON object that exactly "
-                    "matches the TermsheetExtract schema."
-                ),
+                "content": TERMSHEET_EXTRACTION_PROMPT,
             },
             {
                 "role": "user",
-                "content": f"Produce the JSON now for the {parsed_text}",
+                "content": f"Extract ALL data from this termsheet document. Return JSON matching TermsheetExtract schema:\n\n{parsed_text}",
             },
         ],
-        temperature=0.1,
+        temperature=0.0,
         response_format=TermsheetExtract,
     )
 

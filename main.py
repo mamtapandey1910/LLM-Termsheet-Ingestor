@@ -24,8 +24,8 @@ def main() -> None:
         raise FileNotFoundError(f"PDF not found: {pdf_path}")
 
     # Ensure database and tables exist
-    # create_database_if_not_exists()
-    # create_tables()
+    create_database_if_not_exists()
+    create_tables()
 
     print(f"Parsing PDF: {pdf_path}")
     text = parse_pdf_text(str(pdf_path))
@@ -37,9 +37,9 @@ def main() -> None:
     print("\n--- Extracted Termsheet Data ---")
     print(json.dumps(result.model_dump(mode="json"), indent=2, default=str))
 
-    # print("\nSaving to database...")
-    # product = save_termsheet(result)
-    # print(f"Saved product: {product.isin} (id: {product.id})")
+    print("\nSaving to database...")
+    product = save_termsheet(result)
+    print(f"Saved product: {product.isin} (id: {product.id})")
 
 
 if __name__ == "__main__":

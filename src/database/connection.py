@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import os
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from dotenv import load_dotenv
 from psycopg import connect
@@ -105,22 +105,23 @@ def save_termsheet(data: "TermsheetExtract") -> Product:
         
         if existing_product:
             # Update existing product
-            existing_product.sedol = data.sedol
-            existing_product.short_description = data.short_description
-            existing_product.issuer = data.issuer
-            existing_product.currency = data.currency
-            existing_product.product_type = data.product_type
-            existing_product.guarantor = data.guarantor
-            existing_product.dealer = data.dealer
-            existing_product.nominal_amount = data.nominal_amount
-            existing_product.specified_denomination = data.specified_denomination
-            existing_product.calculation_amount = data.calculation_amount
-            existing_product.strike_date = data.strike_date
-            existing_product.issue_date = data.issue_date
-            existing_product.trade_date = data.trade_date
-            existing_product.maturity_date = data.maturity_date
-            existing_product.coupon_barrier_level = data.coupon_barrier_level
-            existing_product.knock_in_barrier_level = data.knock_in_barrier_level
+            prod: Any = existing_product
+            prod.sedol = data.sedol
+            prod.short_description = data.short_description
+            prod.issuer = data.issuer
+            prod.currency = data.currency
+            prod.product_type = data.product_type
+            prod.guarantor = data.guarantor
+            prod.dealer = data.dealer
+            prod.nominal_amount = data.nominal_amount
+            prod.specified_denomination = data.specified_denomination
+            prod.calculation_amount = data.calculation_amount
+            prod.strike_date = data.strike_date
+            prod.issue_date = data.issue_date
+            prod.trade_date = data.trade_date
+            prod.maturity_date = data.maturity_date
+            prod.coupon_barrier_level = data.coupon_barrier_level
+            prod.knock_in_barrier_level = data.knock_in_barrier_level
             product = existing_product
             
             # Delete existing events and underlyings for this product
