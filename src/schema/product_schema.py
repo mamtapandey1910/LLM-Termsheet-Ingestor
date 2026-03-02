@@ -12,8 +12,8 @@ ISIN_PATTERN = re.compile(r"^[A-Z]{2}[A-Z0-9]{9}[0-9]{1}$")
 class EventExtract(BaseModel):
     """Product event (coupon, autocall, strike, maturity)."""
 
-    event_type: str = Field(description="Strike, Coupon, Autocall, or Maturity")
-    event_date: date = Field(description="Observation date")
+    event_type: str = Field(..., description="Strike, Coupon, Autocall, or Maturity")
+    event_date: date = Field(..., description="Observation date")
     event_level_pct: Decimal | None = Field(default=None, description="Barrier level %")
     event_strike_pct: Decimal | None = Field(default=None, description="Strike %")
     event_amount: Decimal | None = Field(default=None, description="Coupon or redemption amount %")
@@ -23,7 +23,7 @@ class EventExtract(BaseModel):
 class UnderlyingExtract(BaseModel):
     """Underlying index or asset."""
 
-    bbg_code: str = Field(description="Bloomberg code")
+    bbg_code: str = Field(..., description="Bloomberg code")
     weight: Decimal | None = Field(default=None, description="Basket weight")
     initial_price: Decimal | None = Field(default=None, description="Initial price")
 
@@ -31,12 +31,12 @@ class UnderlyingExtract(BaseModel):
 class TermsheetExtract(BaseModel):
     """Extracted termsheet data."""
 
-    isin: str = Field(description="ISIN code")
-    issuer: str = Field(description="Issuer name")
+    isin: str = Field(..., description="ISIN code")
+    issuer: str = Field(..., description="Issuer name")
     currency: str = Field(default="GBP", description="Currency")
-    issue_date: date = Field(description="Issue date")
-    trade_date: date = Field(description="Trade date")
-    maturity_date: date = Field(description="Maturity date")
+    issue_date: date = Field(..., description="Issue date")
+    trade_date: date = Field(..., description="Trade date")
+    maturity_date: date = Field(..., description="Maturity date")
 
     sedol: str | None = Field(default=None, description="SEDOL code")
     short_description: str | None = Field(default=None, description="Product description")
