@@ -54,7 +54,7 @@ For EACH row in the coupon table:
 - event_type: "Coupon"
 - event_date: Coupon Valuation Date
 - event_payment_date: Interest Payment Date
-- event_level_pct: **IMPORTANT** - Extract from "Coupon Barrier Condition" text. Look for "greater than or equal to X%" - use X as the value. In this document it's 75.
+- event_level_pct: **IMPORTANT** - Extract from "Coupon Barrier Condition" text. Look for "greater than or equal to X%" - use X as the value.
 - event_amount: Rate of Interest / Coupon rate (e.g., 2.0375)
 
 #### 3. AUTOCALL EVENTS (extract ALL from "Automatic Early Redemption" table)
@@ -70,7 +70,7 @@ For EACH row in the autocall table:
 - event_type: "Maturity" (NOT "Knock-in")
 - event_date: Redemption Valuation Date (same as last coupon valuation date)
 - event_payment_date: Maturity Date
-- event_level_pct: **IMPORTANT** - Extract from "Knock-in Event" text. Look for "less than X%" - use X as the value. In this document it's 65.
+- event_level_pct: **IMPORTANT** - Extract from "Knock-in Event" text. Look for "less than X%" - use X as the value.
 
 ### Underlyings Extraction
 From "Basket of Indices" table, extract EACH underlying:
@@ -83,11 +83,10 @@ Return a valid JSON object with all extracted fields. Use null for missing optio
 
 **CRITICAL - EXTRACT ALL EVENTS:**
 - 1 Strike event (event_level_pct: 100, event_strike_pct: 100)
-- 24 Coupon events (event_level_pct: 75 for each, event_amount: 2.0375)
-- 5 Autocall events (event_level_pct: 100, event_amount: 100)
-- 1 Maturity event (event_type: "Maturity", event_level_pct: 65, event_payment_date: maturity date)
+- ALL Coupon events from the coupon table (with event_level_pct from barrier condition, event_amount from rate)
+- ALL Autocall events from the autocall table (event_level_pct from trigger, event_amount from AER percentage)
+- 1 Maturity event (event_type: "Maturity", event_level_pct from knock-in barrier)
 
-Total: 31 events minimum.
 Extract ALL underlyings from the basket.
 
 ## IMPORTANT

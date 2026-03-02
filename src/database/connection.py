@@ -17,31 +17,30 @@ if TYPE_CHECKING:
 
 load_dotenv()
 
+REQUIRED_ENV_VARS = ["POSTGRES_HOST", "POSTGRES_PORT", "POSTGRES_DB", "POSTGRES_USER", "POSTGRES_PASSWORD"]
+
+
+def _get_db_config() -> dict[str, str]:
+    """Get database configuration from environment variables."""
+    missing = [var for var in REQUIRED_ENV_VARS if not os.getenv(var)]
+    if missing:
+        raise ValueError(f"Missing required environment variables: {', '.join(missing)}")
+    return {
+        "host": os.environ["POSTGRES_HOST"],
+        "port": os.environ["POSTGRES_PORT"],
+        "database": os.environ["POSTGRES_DB"],
+        "user": os.environ["POSTGRES_USER"],
+        "password": os.environ["POSTGRES_PASSWORD"],
+    }
+
 
 def get_database_url() -> str:
     configured_url = os.getenv("DATABASE_URL")
     if configured_url:
         return configured_url
 
-    required_vars = [
-        "POSTGRES_HOST",
-        "POSTGRES_PORT",
-        "POSTGRES_DB",
-        "POSTGRES_USER",
-        "POSTGRES_PASSWORD",
-    ]
-    missing_vars = [var for var in required_vars if not os.getenv(var)]
-    if missing_vars:
-        missing = ", ".join(missing_vars)
-        raise ValueError(f"Missing required environment variables: {missing}")
-
-    host = os.environ["POSTGRES_HOST"]
-    port = os.environ["POSTGRES_PORT"]
-    database = os.environ["POSTGRES_DB"]
-    user = os.environ["POSTGRES_USER"]
-    password = os.environ["POSTGRES_PASSWORD"]
-
-    return f"postgresql+psycopg://{user}:{password}@{host}:{port}/{database}"
+    cfg = _get_db_config()
+    return f"postgresql+psycopg://{cfg['user']}:{cfg['password']}@{cfg['host']}:{cfg['port']}/{cfg['database']}"
 
 
 def get_engine() -> Engine:
@@ -57,38 +56,22 @@ def check_database_connection() -> None:
 
 
 def create_database_if_not_exists() -> None:
-    required_vars = [
-        "POSTGRES_HOST",
-        "POSTGRES_PORT",
-        "POSTGRES_DB",
-        "POSTGRES_USER",
-        "POSTGRES_PASSWORD",
-    ]
-    missing_vars = [var for var in required_vars if not os.getenv(var)]
-    if missing_vars:
-        missing = ", ".join(missing_vars)
-        raise ValueError(f"Missing required environment variables: {missing}")
-
-    host = os.environ["POSTGRES_HOST"]
-    port = os.environ["POSTGRES_PORT"]
-    database = os.environ["POSTGRES_DB"]
-    user = os.environ["POSTGRES_USER"]
-    password = os.environ["POSTGRES_PASSWORD"]
+    cfg = _get_db_config()
 
     with connect(
-        host=host,
-        port=port,
+        host=cfg["host"],
+        port=cfg["port"],
         dbname="postgres",
-        user=user,
-        password=password,
+        user=cfg["user"],
+        password=cfg["password"],
         autocommit=True,
     ) as connection:
         with connection.cursor() as cursor:
-            cursor.execute("SELECT 1 FROM pg_database WHERE datname = %s", (database,))
+            cursor.execute("SELECT 1 FROM pg_database WHERE datname = %s", (cfg["database"],))
             exists = cursor.fetchone() is not None
             if not exists:
                 cursor.execute(
-                    sql.SQL("CREATE DATABASE {}").format(sql.Identifier(database))
+                    sql.SQL("CREATE DATABASE {}").format(sql.Identifier(cfg["database"]))
                 )
 
 

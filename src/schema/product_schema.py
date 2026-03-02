@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+import re
 from datetime import date
 from decimal import Decimal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
+
+ISIN_PATTERN = re.compile(r"^[A-Z]{2}[A-Z0-9]{9}[0-9]{1}$")
 
 
 class EventExtract(BaseModel):
@@ -49,3 +52,14 @@ class TermsheetExtract(BaseModel):
 
     events: list[EventExtract] = Field(default_factory=list, description="Events")
     underlyings: list[UnderlyingExtract] = Field(default_factory=list, description="Underlyings")
+
+    @field_validator("isin")
+    @classmethod
+    def validate_isin_format(cls, v: str) -> str:
+        """Validate ISIN: 2 letters + 9 alnum + 1 check digit."""
+        v = v.upper().strip()
+        if len(v) != 12:
+            raise ValueError("ISIN must be exactly 12 characters")
+        if not ISIN_PATTERN.match(v):
+            raise ValueError("ISIN format invalid (expected 2-char country code + 10 alnum)")
+        return v
