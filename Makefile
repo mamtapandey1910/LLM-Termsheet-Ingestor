@@ -1,4 +1,4 @@
-.PHONY: setup run db-check test lint typecheck format clean help
+.PHONY: setup run dev db-create db-check db-init test lint typecheck format clean help
 
 PYTHON := .venv/bin/python
 PIP := $(PYTHON) -m pip
@@ -14,8 +14,20 @@ setup:
 run:
 	$(PYTHON) main.py
 
+dev:
+	$(PYTHON) main.py --db-create
+	$(PYTHON) main.py --db-check
+	$(PYTHON) main.py --db-init
+	$(PYTHON) main.py
+
+db-create:
+	$(PYTHON) main.py --db-create
+
 db-check:
 	$(PYTHON) main.py --db-check
+
+db-init:
+	$(PYTHON) main.py --db-init
 
 test:
 	$(PYTHON) -m pytest
@@ -37,7 +49,10 @@ help:
 	@echo "Available targets:"
 	@echo "  make setup     - create venv and install requirements"
 	@echo "  make run       - run main.py"
+	@echo "  make dev       - db-create + db-check + db-init + run"
+	@echo "  make db-create - create database if missing"
 	@echo "  make db-check  - verify PostgreSQL connection from main.py"
+	@echo "  make db-init   - create schema tables"
 	@echo "  make test      - run tests"
 	@echo "  make lint      - run lint checks"
 	@echo "  make typecheck - run mypy"
