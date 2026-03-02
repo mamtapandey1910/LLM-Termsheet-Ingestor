@@ -17,26 +17,36 @@ def extract_termsheet(parsed_text: str) -> TermsheetExtract:
     if not api_key:
         raise ValueError("OPENAI_API_KEY environment variable is required")
 
-    client = OpenAI(api_key=api_key)
+    try:
+        client = OpenAI(api_key=api_key)
+    except Exception as e:
+        raise RuntimeError(f"Failed to initialize OpenAI client: {e}")
 
-    response = client.beta.chat.completions.parse(
-        model="gpt-4o",
-        messages=[
-            {
-                "role": "system",
-                "content": TERMSHEET_EXTRACTION_PROMPT,
-            },
-            {
-                "role": "user",
-                "content": f"Extract ALL data from this termsheet document. Return JSON matching TermsheetExtract schema:\n\n{parsed_text}",
-            },
-        ],
-        temperature=0.0,
-        response_format=TermsheetExtract,
-    )
+    try:
+        response = client.beta.chat.completions.parse(
+            model="gpt-4o",
+            messages=[
+                {
+                    "role": "system",
+                    "content": TERMSHEET_EXTRACTION_PROMPT,
+                },
+                {
+                    "role": "user",
+                    "content": f"Extract ALL data from this termsheet document. Return JSON matching TermsheetExtract schema:\n\n{parsed_text}",
+                },
+            ],
+            temperature=0.0,
+            response_format=TermsheetExtract,
+        )
+    except Exception as e:
+        raise RuntimeError(f"OpenAI API call failed: {e}")
 
-    result = response.choices[0].message.parsed
+    try:
+        result = response.choices[0].message.parsed
+    except Exception as e:
+        raise RuntimeError(f"Failed to parse LLM response: {e}")
+
     if result is None:
         raise ValueError("LLM returned empty response")
-    
     return result
+   
