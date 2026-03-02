@@ -85,53 +85,29 @@ def save_termsheet(data: "TermsheetExtract") -> Product:
     try:
         # Check if product with same ISIN exists
         existing_product = session.query(Product).filter(Product.isin == data.isin).first()
-        
         if existing_product:
-            # Update existing product
-            prod: Any = existing_product
-            prod.sedol = data.sedol
-            prod.short_description = data.short_description
-            prod.issuer = data.issuer
-            prod.currency = data.currency
-            prod.product_type = data.product_type
-            prod.guarantor = data.guarantor
-            prod.dealer = data.dealer
-            prod.nominal_amount = data.nominal_amount
-            prod.specified_denomination = data.specified_denomination
-            prod.calculation_amount = data.calculation_amount
-            prod.strike_date = data.strike_date
-            prod.issue_date = data.issue_date
-            prod.trade_date = data.trade_date
-            prod.maturity_date = data.maturity_date
-            prod.coupon_barrier_level = data.coupon_barrier_level
-            prod.knock_in_barrier_level = data.knock_in_barrier_level
-            product = existing_product
-            
-            # Delete existing events and underlyings for this product
-            session.query(ProductEvent).filter(ProductEvent.product_isin == data.isin).delete()
-            session.query(ProductUnderlying).filter(ProductUnderlying.product_isin == data.isin).delete()
-        else:
-            # Create new Product
-            product = Product(
-                isin=data.isin,
-                sedol=data.sedol,
-                short_description=data.short_description,
-                issuer=data.issuer,
-                currency=data.currency,
-                product_type=data.product_type,
-                guarantor=data.guarantor,
-                dealer=data.dealer,
-                nominal_amount=data.nominal_amount,
-                specified_denomination=data.specified_denomination,
-                calculation_amount=data.calculation_amount,
-                strike_date=data.strike_date,
-                issue_date=data.issue_date,
-                trade_date=data.trade_date,
-                maturity_date=data.maturity_date,
-                coupon_barrier_level=data.coupon_barrier_level,
-                knock_in_barrier_level=data.knock_in_barrier_level,
-            )
-            session.add(product)
+            raise ValueError(f"Duplicate ISIN detected: {data.isin}. Insertion aborted.")
+        # Create new Product
+        product = Product(
+            isin=data.isin,
+            sedol=data.sedol,
+            short_description=data.short_description,
+            issuer=data.issuer,
+            currency=data.currency,
+            product_type=data.product_type,
+            guarantor=data.guarantor,
+            dealer=data.dealer,
+            nominal_amount=data.nominal_amount,
+            specified_denomination=data.specified_denomination,
+            calculation_amount=data.calculation_amount,
+            strike_date=data.strike_date,
+            issue_date=data.issue_date,
+            trade_date=data.trade_date,
+            maturity_date=data.maturity_date,
+            coupon_barrier_level=data.coupon_barrier_level,
+            knock_in_barrier_level=data.knock_in_barrier_level,
+        )
+        session.add(product)
 
         # Create ProductEvents
         for event in data.events:
