@@ -130,6 +130,25 @@ def validate_termsheet(data: TermsheetExtract) -> ValidationResult:
         is_error=True,
     )
 
+    # 1b. No duplicate ISIN in database
+    try:
+        duplicate = check_duplicate_isin(data.isin)
+    except Exception:
+        # If DB check fails, mark as failed to be safe
+        result.add_check(
+            name="No duplicate ISIN",
+            passed=False,
+            message="Failed to verify ISIN uniqueness (DB error)",
+            is_error=True,
+        )
+    else:
+        result.add_check(
+            name="No duplicate ISIN",
+            passed=not duplicate,
+            message=f"ISIN {data.isin} already exists in database" if duplicate else f"ISIN {data.isin} is unique",
+            is_error=True,
+        )
+
     # 2. Issue Date < Maturity Date
     dates_valid = data.issue_date < data.maturity_date
     result.add_check(
