@@ -29,8 +29,3 @@ def save_extraction_json(result: TermsheetExtract, run_id: str) -> Path:
     
     return output_file
 
-
-def print_json(result: TermsheetExtract) -> None:
-    """Print extraction result as formatted JSON."""
-    print("\n--- Extracted Termsheet Data (JSON) ---")
-    print(json.dumps(result.model_dump(mode="json"), indent=2, default=str))

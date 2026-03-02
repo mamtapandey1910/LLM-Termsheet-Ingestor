@@ -47,6 +47,12 @@ class ValidationResult:
 
     def print_results(self) -> None:
         """Print comprehensive validation report."""
+        # ANSI color codes
+        GREEN = "\033[92m"
+        RED = "\033[91m"
+        YELLOW = "\033[93m"
+        RESET = "\033[0m"
+
         print("\n" + "=" * 60)
         print("VALIDATION REPORT")
         print("=" * 60)
@@ -58,7 +64,10 @@ class ValidationResult:
         # Print required checks (errors)
         print("\n[Required Checks]")
         for check in error_checks:
-            status = "✓ PASS" if check.passed else "✗ FAIL"
+            if check.passed:
+                status = f"{GREEN}✓ PASS{RESET}"
+            else:
+                status = f"{RED}✗ FAIL{RESET}"
             print(f"  {status}: {check.name}")
             if not check.passed:
                 print(f"         → {check.message}")
@@ -67,7 +76,10 @@ class ValidationResult:
         if warning_checks:
             print("\n[Optional Checks]")
             for check in warning_checks:
-                status = "✓ PASS" if check.passed else "⚠ WARN"
+                if check.passed:
+                    status = f"{GREEN}✓ PASS{RESET}"
+                else:
+                    status = f"{YELLOW}⚠ WARN{RESET}"
                 print(f"  {status}: {check.name}")
                 if not check.passed:
                     print(f"         → {check.message}")
@@ -84,9 +96,9 @@ class ValidationResult:
         print("-" * 60)
 
         if self.is_valid:
-            print("Result: ✓ VALIDATION PASSED")
+            print(f"Result: {GREEN}✓ VALIDATION PASSED{RESET}")
         else:
-            print("Result: ✗ VALIDATION FAILED")
+            print(f"Result: {RED}✗ VALIDATION FAILED{RESET}")
         print("=" * 60 + "\n")
 
 

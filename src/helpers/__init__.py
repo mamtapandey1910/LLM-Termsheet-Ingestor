@@ -1,7 +1,6 @@
 """Helper modules for validation and output."""
 from src.helpers.output import (
     generate_run_id,
-    print_json,
     save_extraction_json,
 )
 from src.helpers.validation import (
@@ -14,7 +13,6 @@ __all__ = [
     "ValidationResult",
     "check_duplicate_isin",
     "generate_run_id",
-    "print_json",
     "save_extraction_json",
     "validate_termsheet",
 ]

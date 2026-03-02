@@ -3,7 +3,7 @@
 PYTHON := .venv/bin/python
 PIP := $(PYTHON) -m pip
 PYTHONPATH := src
-FILE := data/XS3184638594_Termsheet_Final.pdf
+PDF ?= data/XS3184638594_Termsheet_Final.pdf
 
 export PYTHONPATH
 
@@ -13,7 +13,7 @@ setup:
 	$(PIP) install -r requirements.txt
 
 run:
-	$(PYTHON) main.py $(FILE)
+	$(PYTHON) main.py $(PDF)
 
 test:
 	$(PYTHON) -m pytest
