@@ -16,7 +16,8 @@ run:
 	$(PYTHON) main.py $(PDF)
 
 test:
-	$(PYTHON) -m pytest
+	# Run unit tests using unittest discovery (tests/ contains unittest files)
+	$(PYTHON) -m unittest discover -v tests
 
 lint:
 	$(PYTHON) -m ruff check .
