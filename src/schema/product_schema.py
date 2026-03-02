@@ -53,6 +53,9 @@ class TermsheetExtract(BaseModel):
     events: list[EventExtract] = Field(default_factory=list, description="Events")
     underlyings: list[UnderlyingExtract] = Field(default_factory=list, description="Underlyings")
 
+    class Config:
+        extra = "forbid"
+
     @field_validator("isin")
     @classmethod
     def validate_isin_format(cls, v: str) -> str:
