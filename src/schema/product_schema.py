@@ -18,6 +18,9 @@ class EventExtract(BaseModel):
     event_strike_pct: Decimal | None = Field(default=None, description="Strike %")
     event_amount: Decimal | None = Field(default=None, description="Coupon or redemption amount %")
     event_payment_date: date | None = Field(default=None, description="Payment date")
+    
+    class Config:
+            extra = "forbid"
 
 
 class UnderlyingExtract(BaseModel):
@@ -26,6 +29,9 @@ class UnderlyingExtract(BaseModel):
     bbg_code: str = Field(..., description="Bloomberg code")
     weight: Decimal | None = Field(default=None, description="Basket weight")
     initial_price: Decimal | None = Field(default=None, description="Initial price")
+    
+    class Config:
+            extra = "forbid"
 
 
 class TermsheetExtract(BaseModel):

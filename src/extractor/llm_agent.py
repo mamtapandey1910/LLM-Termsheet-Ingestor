@@ -48,5 +48,9 @@ def extract_termsheet(parsed_text: str) -> TermsheetExtract:
 
     if result is None:
         raise ValueError("LLM returned empty response")
-    return result
-   
+    try:
+        validated = TermsheetExtract.model_validate(result)
+    except Exception as e:
+        raise ValueError(f"Schema validation failed: {e}")
+    return validated
+
