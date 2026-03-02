@@ -1,8 +1,9 @@
-.PHONY: setup run dev db-create db-check db-init test lint typecheck format clean help
+.PHONY: setup run dev db-create db-check db-init extract test lint typecheck format clean help
 
 PYTHON := .venv/bin/python
 PIP := $(PYTHON) -m pip
 PYTHONPATH := src
+FILE := data/XS3184638594_Termsheet_Final.pdf
 
 export PYTHONPATH
 
@@ -29,6 +30,9 @@ db-check:
 db-init:
 	$(PYTHON) main.py --db-init
 
+extract:
+	$(PYTHON) main.py --extract $(FILE)
+
 test:
 	$(PYTHON) -m pytest
 
@@ -53,6 +57,7 @@ help:
 	@echo "  make db-create - create database if missing"
 	@echo "  make db-check  - verify PostgreSQL connection from main.py"
 	@echo "  make db-init   - create schema tables"
+	@echo "  make extract   - extract data from termsheet (FILE=path/to/file.pdf)"
 	@echo "  make test      - run tests"
 	@echo "  make lint      - run lint checks"
 	@echo "  make typecheck - run mypy"
