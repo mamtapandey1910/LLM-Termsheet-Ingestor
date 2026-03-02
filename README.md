@@ -4,8 +4,6 @@ Extracts termsheet data from PDF using LLM, validates, and saves to PostgreSQL.
 
 ## Quick Start
 
-# LLM-Termsheet-Ingestor
-
 prerequisites:- Python 3.8 or higher
 
 - Make installed on your system
@@ -31,6 +29,30 @@ default pdf file is `data/XS3184638594_Termsheet_Final.pdf`
 - `src/schema/` — Data models
 - `src/helpers/validation.py` — Business validation
 - `src/database/` — DB connection & models
+
+## Assumptions Made
+
+- The input PDF is a structured termsheet document containing all required product fields.
+- ISIN, issuer, issue date, trade date, and maturity date are always present and valid and other
+- The database schema matches the Pydantic models in `src/schema/product_schema.py`.
+- Only one product per ISIN is allowed (no duplicates).
+- The LLM extraction returns data matching the Pydantic schema.
+- The environment variable `OPENAI_API_KEY` is set for LLM extraction.
+
+## How GPT Was Used
+
+- GPT-4 was used to extract structured termsheet data from PDF text using the OpenAI API and inforce the proper schema to output the JSON data in structure format.
+- The extraction prompt is defined in `src/extractor/system_prompt.py`.
+- The LLM output is parsed and validated against the Pydantic schema (`TermsheetExtract`).
+- GPT enables flexible extraction from varied document formats and automates data structuring.
+
+## What Would Be Improved in a Production System
+
+- More granular error messages, logging, and user feedback.
+- Sanitize inputs, restrict file uploads, and protect API keys.
+- More comprehensive unit and integration tests, including for LLM outputs.
+- Add a web UI for uploads, review, and corrections.
+- Track extraction success rates, validation failures, and system health.
 
 ## Validation
 
